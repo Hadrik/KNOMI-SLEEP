@@ -1,5 +1,6 @@
 #include "ui/ui.h"
 #include "knomi.h"
+#include "lvgl_hal.h"
 
 static wifi_status_t lv_wifi_status = WIFI_STATUS_INIT;
 
@@ -30,6 +31,7 @@ static void lv_goto_wifi_screen(wifi_status_t state) {
     Serial.println(lv_wifi_status);
 
     _ui_screen_change(&target, LV_SCR_LOAD_ANIM_NONE, 0, 0, NULL);
+    tft_set_backlight(16);
 }
 
 void lv_loop_wifi_change_screen(wifi_status_t status) {

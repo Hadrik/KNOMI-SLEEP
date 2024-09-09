@@ -182,6 +182,7 @@ void MOONRAKER::get_knomi_status(void) {
         data.qgling = json_parse["result"]["status"]["gcode_macro _KNOMI_STATUS"]["qgling"].as<bool>();
         data.heating_nozzle = json_parse["result"]["status"]["gcode_macro _KNOMI_STATUS"]["heating_nozzle"].as<bool>();
         data.heating_bed = json_parse["result"]["status"]["gcode_macro _KNOMI_STATUS"]["heating_bed"].as<bool>();
+        data.off = json_parse["result"]["status"]["gcode_macro _KNOMI_STATUS"]["off"].as<bool>();
 #ifdef MOONRAKER_DEBUG
         Serial.print("homing: ");
         Serial.println(data.homing);

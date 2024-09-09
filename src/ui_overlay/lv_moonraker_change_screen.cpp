@@ -2,6 +2,7 @@
 #include "knomi.h"
 #include "moonraker.h"
 #include "lv_overlay.h"
+#include "lvgl_hal.h"
 
 typedef enum {
     LV_MOONRAKER_STATE_IDLE = 0,
@@ -95,6 +96,12 @@ void lv_loop_moonraker_change_screen(void) {
     //         return;
     //     }
     // }
+    if (moonraker.data.off) {
+        tft_set_backlight(0);
+        return;
+    } else {
+        tft_set_backlight(16);
+    }
     if (moonraker.data.homing) {
         lv_goto_busy_screen(ui_ScreenMainGif, LV_MOONRAKER_STATE_HOMING, &gif_homing);
         return;

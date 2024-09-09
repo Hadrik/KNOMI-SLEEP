@@ -315,7 +315,7 @@ restart:
     // refresh wifi scan
     if (knomi_config_require & WEB_POST_WIFI_REFRESH) {
         knomi_config_require &= ~WEB_POST_WIFI_REFRESH;
-        WiFi.scanNetworks(true, false, true, 75U);
+        WiFi.scanNetworks(true, false, true, 150U);
     }
 
     // restart
@@ -328,7 +328,7 @@ void wifi_task(void * parameter) {
 
     eeprom_init();
     wifi_config_loop(true);
-    WiFi.scanNetworks(true, false, true, 75U);
+    WiFi.scanNetworks(true, false, true, 150U);
     webserver_setup();
 
     while (1) {
