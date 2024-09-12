@@ -96,12 +96,9 @@ void lv_loop_moonraker_change_screen(void) {
     //         return;
     //     }
     // }
-    if (moonraker.data.off) {
-        tft_set_backlight(0);
-        return;
-    } else {
-        tft_set_backlight(16);
-    }
+    tft_set_backlight(moonraker.data.brightness);
+    if (moonraker.data.brightness == 0) return;
+    
     if (moonraker.data.homing) {
         lv_goto_busy_screen(ui_ScreenMainGif, LV_MOONRAKER_STATE_HOMING, &gif_homing);
         return;

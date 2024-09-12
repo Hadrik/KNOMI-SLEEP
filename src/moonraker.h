@@ -21,6 +21,7 @@ typedef struct {
     uint8_t progress;
     char file_path[32];
 
+    uint8_t brightness;
     bool pause;
     bool printing;    // is klipper in a printing task (including printing, pausing, paused, cancelling)
     bool homing;
@@ -28,7 +29,6 @@ typedef struct {
     bool qgling;
     bool heating_nozzle;
     bool heating_bed;
-    bool off;
 } moonraker_data_t;
 
 #define QUEUE_LEN 5

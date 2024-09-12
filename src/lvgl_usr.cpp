@@ -132,8 +132,8 @@ void lvgl_ui_task(void * parameter) {
             }
         }
 
-        // lv_loop_auto_idle(status);
-        // lv_loop_btn_event();
+        lv_loop_auto_idle(status);
+        lv_loop_btn_event();
 
         delay(5);
     }

@@ -182,7 +182,7 @@ void MOONRAKER::get_knomi_status(void) {
         data.qgling = json_parse["result"]["status"]["gcode_macro _KNOMI_STATUS"]["qgling"].as<bool>();
         data.heating_nozzle = json_parse["result"]["status"]["gcode_macro _KNOMI_STATUS"]["heating_nozzle"].as<bool>();
         data.heating_bed = json_parse["result"]["status"]["gcode_macro _KNOMI_STATUS"]["heating_bed"].as<bool>();
-        data.off = json_parse["result"]["status"]["gcode_macro _KNOMI_STATUS"]["off"].as<bool>();
+        data.brightness = json_parse["result"]["status"]["gcode_macro _KNOMI_STATUS"]["brightness"].as<uint8_t>();
 #ifdef MOONRAKER_DEBUG
         Serial.print("homing: ");
         Serial.println(data.homing);
@@ -227,12 +227,14 @@ void moonraker_post_task(void * parameter) {
 
 void moonraker_task(void * parameter) {
 
+#ifdef KNOMIV2
     xTaskCreate(moonraker_post_task, "moonraker post",
         4096,  // Stack size (bytes)
         NULL,  // Parameter to pass
         8,     // Task priority
         NULL   // Task handle
         );
+#endif
 
     for(;;) {
         if (wifi_get_connect_status() == WIFI_STATUS_CONNECTED) {

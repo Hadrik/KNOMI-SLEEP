@@ -49,7 +49,7 @@ void ui_event_popup_ok(lv_event_t * e)
 static void lv_goto_popup_screen(lv_popup_status_t state, const char * warning) {
     if (lv_popup_status == state) return;
     lv_popup_status = state;
-    tft_set_backlight(16);
+    tft_set_backlight(moonraker.data.brightness > 0 ? moonraker.data.brightness : 16);
     lv_popup_warning(warning, false);
 }
 

@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define FW_VERSION "V1.0.2"
+#define FW_VERSION "V1.0.2-B"
 
  // default 80 for http
 #define SERVER_PORT 80
