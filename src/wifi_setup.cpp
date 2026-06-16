@@ -275,26 +275,52 @@ restart:
             Serial.println(knomi_config.sta_ssid);
             Serial.print("sta pwd: ");
             Serial.println(knomi_config.sta_pwd);
-            WiFi.setMinSecurity(knomi_config.sta_auth);
-            wl_status_t n = WiFi.begin(knomi_config.sta_ssid, knomi_config.sta_pwd);  /*Connecting to Defined Access point*/
-            wifi_status = WIFI_STATUS_CONNECTING;
-            uint32_t timeout = millis() + WIFI_STA_TIMEOUT;
-            while (millis() < timeout) {
-                if (WiFi.status() == WL_CONNECTED) {
-                    wifi_status = WIFI_STATUS_CONNECTED;
-                    break;
+#ifdef WIFI_STA_RETRY_INF
+            while (true) {
+#else
+            uint8_t retry = 0;
+            while (retry < WIFI_STA_RETRY) {
+#endif
+                WiFi.disconnect(true, true);
+                WiFi.mode(WIFI_MODE_STA);
+                WiFi.setAutoReconnect(true);
+                WiFi.begin(knomi_config.sta_ssid, knomi_config.sta_pwd);  /*Connecting to Defined Access point*/
+                wifi_status = WIFI_STATUS_CONNECTING;
+                uint32_t timeout = millis() + WIFI_STA_TIMEOUT;
+                while (millis() < timeout) {
+                    if (WiFi.status() == WL_CONNECTED) {
+                        wifi_status = WIFI_STATUS_CONNECTED;
+                        break;
+                    }
+                    Serial.print(".");
+                    delay(100);
                 }
-                Serial.print(".");
-                delay(100);
+                
+                if (wifi_status == WIFI_STATUS_CONNECTED) {
+                    break;
+                } else {
+                    Serial.println("sta connect failed!!!");
+                    Serial.println("status: " + String(WiFi.status()));
+#ifdef WIFI_STA_RETRY_INF
+                    Serial.println("retrying...");
+#else
+                    retry++;
+                    Serial.print("retry: ");
+                    Serial.println(retry);
+#endif
+                }
             }
+
             if (wifi_status != WIFI_STATUS_CONNECTED) {
                 Serial.println("sta connect failed!!!");
+                Serial.println("status: " + String(WiFi.status()));
                 wifi_status = WIFI_STATUS_ERROR;
                 // reset wifi mode to "ap"
                 strlcpy(knomi_config.mode, "ap", sizeof(knomi_config.mode));
                 knomi_config_require |= WEB_POST_WIFI_CONFIG_MODE;
                 goto restart;
             }
+
             wifi_refresh_connected();
             Serial.print("sta ip: ");
             Serial.println(WiFi.localIP());   /*Printing IP address of Connected network*/
